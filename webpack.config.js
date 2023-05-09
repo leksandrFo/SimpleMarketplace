@@ -10,7 +10,8 @@ const config = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js',
+    filename: 'index.[contenthash].js',
+    assetModuleFilename: path.join('images', '[name].[contenthash].[ext]'),
   },
   devServer: {
     open: true,
@@ -27,7 +28,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|gif)$/i,
         type: 'asset/resource',
       },
       { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
@@ -40,9 +41,17 @@ const config = {
         use: 'url-loader?limit=10000',
       },
       {
-        test: /\.(ttf|eot|svg|jpg)(\?[\s\S]+)?$/,
-        use: 'file-loader',
+        test: /\.html$/i,
+        loader: 'html-loader',
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      // {
+      //   test: /\.(ttf|eot|svg|jpg)(\?[\s\S]+)?$/,
+      //   loader: 'file-loader',
+      // },
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/
     ],
